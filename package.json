@@ -6,7 +6,7 @@
   "scripts": {
     "test": "mocha",
     "start": "node server.js",
-	"readme": "README.md"
+    "readme": "README.md"
   },
   "repository": {
     "type": "git",
@@ -26,9 +26,10 @@
   "dependencies": {
     "node": "^4.4.7",
     "express": "^4.14.0",
-	"node-cron" : "^1.1.1",
-	"cheerio" : "^0.20.0",
-	"request" : "",
-	
+    "node-cron": "^1.1.1",
+    "cheerio": "^0.20.0",
+    "underscore": "1.8.3",
+    "mocha": "2.5.3",
+    "request": ""
   }
 }
