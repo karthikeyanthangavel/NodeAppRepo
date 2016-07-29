@@ -107,23 +107,28 @@ var getRecordCountByKey = function(tableName, key) {
 //RESTful api to fetch data based on stock exchange name and the limit(number of records)
 app.get('/getAllStocksByName/:StockExchangeName/:Limit', function(req, res) {
     var stockExchangeName = req.params.StockExchangeName.toLowerCase();
-    var limit = parseInt(req.params.Limit);
 
-    if (stockExchangeName === 'nasdaq') {
-        getALLRecordCount().then(function(stockResult) {
-            _.each(stockResult[0], function(item, index) {
-                if (_.isNumber(item)) {
-                    if (parseInt(req.params.Limit) > item) {
-                        requestFailedJsonResult(res, 'Request failed. The limit entered is exceeds available records in system')
-                    } else {
-                        getAllStocksJson(req, res, stockExchangeName, limit);
-                    }
-                }
-            });
-        });
+    if (isNaN(req.params.Limit)) {
+        return requestFailedJsonResult(res, 'Limit parameter should be an integer')
     } else {
-        requestFailedJsonResult(res, 'StockExchange name should be NASDAQ')
+        if (stockExchangeName === 'nasdaq') {
+            var limit = parseInt(req.params.Limit);
+            getALLRecordCount().then(function(stockResult) {
+                _.each(stockResult[0], function(item, index) {
+                    if (_.isNumber(item)) {
+                        if (parseInt(req.params.Limit) > item) {
+                            requestFailedJsonResult(res, 'Request failed. The limit entered is exceeds available records in system')
+                        } else {
+                            getAllStocksJson(req, res, stockExchangeName, limit);
+                        }
+                    }
+                });
+            });
+        } else {
+            requestFailedJsonResult(res, 'StockExchangeName parameter should be NASDAQ')
+        }
     }
+
 });
 
 //check in the master data table have the requested stock exchage name
